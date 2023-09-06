@@ -3,7 +3,7 @@ import CreatePost from "./components/CreatePost";
 
 const App = () => {
   return (
-    <div className="">
+    <div className=" m-2">
       <CreatePost />
     </div>
   );

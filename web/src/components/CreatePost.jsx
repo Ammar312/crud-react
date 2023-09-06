@@ -8,13 +8,15 @@ const CreatePost = () => {
   const titleInput = useRef();
   const bodyInput = useRef();
   useEffect(() => {
-    async () => {
+    const fetchData = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/v1/posts`);
+        console.log("read");
         console.log(response.data);
         setAllPosts(response.data);
       } catch (error) {}
     };
+    fetchData();
   }, []);
   const submitPost = async (e) => {
     e.preventDefault();
@@ -56,8 +58,12 @@ const CreatePost = () => {
         </form>
       </div>
 
-      {allPosts?.map(() => {
-        return <Post allPosts={allPosts} />;
+      {allPosts?.map((eachPost, index) => {
+        return (
+          <div key={index}>
+            <Post eachPost={eachPost} />
+          </div>
+        );
       })}
     </div>
   );
