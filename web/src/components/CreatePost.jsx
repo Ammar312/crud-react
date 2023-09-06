@@ -1,10 +1,32 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import Post from "./Post";
 
 const CreatePost = () => {
+  const baseURL = "http://localhost:3000";
+  const [allPosts, setAllPosts] = useState([]);
   const titleInput = useRef();
   const bodyInput = useRef();
-  const submitPost = (e) => {
+  useEffect(() => {
+    async () => {
+      try {
+        const response = await axios.get(`${baseURL}/api/v1/posts`);
+        console.log(response.data);
+        setAllPosts(response.data);
+      } catch (error) {}
+    };
+  }, []);
+  const submitPost = async (e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post(`${baseURL}/api/v1/post`, {
+        title: titleInput.current.value,
+        text: bodyInput.current.value,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -33,6 +55,10 @@ const CreatePost = () => {
           </button>
         </form>
       </div>
+
+      {allPosts?.map(() => {
+        return <Post allPosts={allPosts} />;
+      })}
     </div>
   );
 };
