@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Post from "./Post";
+import EditPostComp from "./EditPostComp";
 
 const CreatePost = () => {
   const baseURL = "http://localhost:3000";
@@ -43,6 +44,12 @@ const CreatePost = () => {
       console.log(error);
     }
   };
+  const editPost = () => {
+    allPosts[index].isEdit = true;
+    setAllPosts([...allPosts]);
+    console.log("clicked");
+    setToggleRefresh(!toggleRefresh);
+  };
   return (
     <div>
       <div className=" border-2 border-purple-500 max-w-2xl">
@@ -74,7 +81,15 @@ const CreatePost = () => {
       {allPosts?.map((eachPost, index) => {
         return (
           <div key={index}>
-            <Post eachPost={eachPost} deleteHandle={deleteHandle} />
+            {eachPost.isEdit ? (
+              <EditPostComp />
+            ) : (
+              <Post
+                eachPost={eachPost}
+                deleteHandle={deleteHandle}
+                editPost={editPost}
+              />
+            )}
           </div>
         );
       })}
