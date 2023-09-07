@@ -54,11 +54,23 @@ const CreatePost = () => {
     setAllPosts([...allPosts]);
     console.log("canceled", index);
   };
-  const saveEdit = (e, id) => {
-    const title = e.target;
-    // const text = e.target.elements[2].value;
+  const saveEdit = async (e, id) => {
+    const title =
+      e.target.parentElement.previousElementSibling.firstChild.value;
+    const text = e.target.parentElement.previousElementSibling.lastChild.value;
     console.log(title);
+    console.log(text);
     console.log(id);
+    try {
+      const response = await axios.put(`${baseURL}/api/v1/post/${id}`, {
+        title: title,
+        text: text,
+      });
+      setToggleRefresh(!toggleRefresh);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
