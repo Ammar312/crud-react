@@ -44,11 +44,21 @@ const CreatePost = () => {
       console.log(error);
     }
   };
-  const editPost = () => {
+  const editPost = (index) => {
     allPosts[index].isEdit = true;
     setAllPosts([...allPosts]);
-    console.log("clicked");
-    setToggleRefresh(!toggleRefresh);
+    console.log("clicked", index);
+  };
+  const cancelEdit = (index) => {
+    allPosts[index].isEdit = false;
+    setAllPosts([...allPosts]);
+    console.log("canceled", index);
+  };
+  const saveEdit = (e, id) => {
+    const title = e.target;
+    // const text = e.target.elements[2].value;
+    console.log(title);
+    console.log(id);
   };
   return (
     <div>
@@ -82,12 +92,18 @@ const CreatePost = () => {
         return (
           <div key={index}>
             {eachPost.isEdit ? (
-              <EditPostComp />
+              <EditPostComp
+                eachPost={eachPost}
+                cancelEdit={cancelEdit}
+                index={index}
+                saveEdit={saveEdit}
+              />
             ) : (
               <Post
                 eachPost={eachPost}
                 deleteHandle={deleteHandle}
                 editPost={editPost}
+                index={index}
               />
             )}
           </div>
