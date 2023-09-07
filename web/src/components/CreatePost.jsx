@@ -5,6 +5,7 @@ import Post from "./Post";
 const CreatePost = () => {
   const baseURL = "http://localhost:3000";
   const [allPosts, setAllPosts] = useState([]);
+  const [toggleRefresh, setToggleRefresh] = useState(false);
   const titleInput = useRef();
   const bodyInput = useRef();
   useEffect(() => {
@@ -17,7 +18,7 @@ const CreatePost = () => {
       } catch (error) {}
     };
     fetchData();
-  }, []);
+  }, [toggleRefresh]);
   const submitPost = async (e) => {
     e.preventDefault();
     try {
@@ -26,6 +27,18 @@ const CreatePost = () => {
         text: bodyInput.current.value,
       });
       console.log(response.data);
+      setToggleRefresh(!toggleRefresh);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteHandle = async (id) => {
+    console.log(id);
+
+    try {
+      const response = await axios.delete(`${baseURL}/api/v1/post/${id}`);
+      console.log(response.data);
+      setToggleRefresh(!toggleRefresh);
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +74,7 @@ const CreatePost = () => {
       {allPosts?.map((eachPost, index) => {
         return (
           <div key={index}>
-            <Post eachPost={eachPost} />
+            <Post eachPost={eachPost} deleteHandle={deleteHandle} />
           </div>
         );
       })}
